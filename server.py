@@ -4,6 +4,12 @@ from datetime import datetime
 from werkzeug.security import generate_password_hash, check_password_hash
 from dotenv import load_dotenv 
 import os
+import secrets
+
+if not os.path.exists('.env'):
+    with open('.env', 'w') as f:
+        f.write(f"SECRET_KEY={secrets.token_hex(32)}")
+
 load_dotenv()
 app = Flask(__name__)
 app.secret_key = os.getenv('SECRET_KEY')
