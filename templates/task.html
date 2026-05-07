@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Task App</title>
+    <link rel="stylesheet" href="{{url_for('static', filename='style.css')}}">
+
+</head>
+<body>
+
+    <a class="log" href="/logout">Logout</a>
+    
+    <div class="tabs">
+    <a href="/notes" class="tab">Note</a>
+    <a href="/tasks" class="tab active">Task</a>
+    </div>
+
+
+    <div>
+        <h2>Add your tasks here!</h2>
+        <form method="POST" action="/tasks">
+        <button type="button" class="add-btn"> ➕</button>
+        <input type="text" name="content" placeholder="Enter tasks" class="add-input" style="display: none;">
+        <button type="submit" class="submit" style="display: none;">add</button>
+
+    </form>
+    </div>
+
+
+
+    <h2 class="heading">Your Tasks</h2>
+    <ul>
+        {% for task in tasks %}
+        <li class="card">
+            <div class="left">
+                <form method="POST" action="/tasks/toggle">
+
+                    {%if task.done%}
+                        <input type="checkbox" checked>
+                        <strong class="done">{{ task.content }}</strong> 
+                        <small class="done">{{ task.date.date() }}</small> 
+                    {%else%}
+                        <input type="checkbox">
+                        <strong>{{ task.content }}</strong>
+                        <small>{{ task.date.date() }}</small> 
+                    {%endif%}
+           
+                    <input type="hidden" name="id" value="{{ task.id }}">
+                    <button type="submit">done</button>
+                </form>
+            </div>
+  
+
+            <div class="right">
+                <button type="button" class = "menu-btn">...</button>
+                <div class="dropdown">
+                    <form method="post" action="/tasks/delete">
+                    <input type="hidden" name="id" value="{{ task.id }}">
+                    <button type="submit">delete</button>
+                </form>
+
+                <form method="post" action="/tasks/update">
+                    <input type="hidden" name="id" value="{{ task.id }}">
+                    <input type= "text" name="content" value="{{ task.content }}" class="update-input" style="display: none;">
+                    <button type="button" class="update-btn">update</button>
+                    <button type="submit" class="update-submit" style="display: none;">confirm</button>
+                </form>
+                </div>
+            </div>
+        </li>
+        {%endfor%}
+    </ul>
+    </div>
+
+    <script src="{{url_for('static', filename='script.js')}}"></script>
+   
+    
+</body>
+</html>
+
+

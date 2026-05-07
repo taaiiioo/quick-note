@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Note App</title>
+    <link rel="stylesheet" href="{{url_for('static', filename='style.css')}}">
+
+</head>
+<body>
+    <a class="log" href="/logout">Logout</a>
+
+    <div class="tabs">
+    <a href="/notes" class="tab active">Note</a>
+    <a href="/tasks" class="tab">Task</a>
+    </div>
+
+
+    <div>
+        <h2>Add your notes here!</h2>
+        <form method="post">
+        <button type="button" class="add-btn">➕</button>
+        <textarea name="content" placeholder="Enter Note" class="add-input" style="display: none;" rows="2"></textarea>
+        <button type="submit" class="add-submit" style="display: none;"> Add note </button>
+    </form>
+    </div>
+    
+
+    <h2 class="heading">Your Notes</h2>
+
+    <ul>
+        {% for note in notes %}
+        <li class="card">
+            <div class="left">
+                <strong>{{ note.content }} </strong>
+                <small>{{ note.date.date() }}</small>
+            </div>
+
+            <div class="right">
+                <button type="button" class="menu-btn">...</button>
+                <div class="dropdown">
+                    <form method="post" action="/notes/delete">
+                    <input type="hidden" name="id" value="{{ note.id }}">
+                    <button type="submit">delete</button>
+                    </form>
+
+                    <form method="post" action="/notes/update">
+                    <input type="hidden" name="id" value="{{ note.id }}">
+                    <textarea name="content" class="update-input" style="display: none;" rows="4">{{ note.content }}</textarea>
+
+                    <button type="button" class="update-btn">update</button>
+                    <button type="submit" class="update-submit" style="display: none;">confirm</button>
+                    </form>
+                </div>
+            </div>  
+        </li>
+  
+        {% endfor %}
+    </ul>
+
+   
+    <script src="{{url_for('static', filename='script.js')}}"></script>
+
+
+</body>
+</html>
